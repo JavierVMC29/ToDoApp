@@ -1,5 +1,6 @@
 const DarkTheme = {
   fontFamily: 'Inter, sans-serif',
+  borderRadius: '5px',
   colors: {
     primary: '#6284DD',
     primaryDark: '#587AD3',

@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios'
 
 import { FiPlus } from 'react-icons/fi';
 
-// API
-import API from '../../enviroment';
+// Hooks
+import useTasks from '../../hooks/useTasks';
 
 // Components
 import Task from '../../components/Task/Task';
 import Button from '../../components/Button/Button';
 import TaskManager from '../../components/TaskManager/TaskManager';
+import TaskForm from '../../components/TaskForm/TaskForm';
 
 // Styles
 
@@ -63,7 +63,6 @@ const OptionsContainer = styled.div`
     width: 150px;
     height: 36.59px;
   }
-
 `;
 
 const TasksContainer = styled.section`
@@ -78,20 +77,12 @@ const TasksContainer = styled.section`
  * @returns JSX.Element
  */
 function Home() {
-  const [tasks, setTasks] = useState()
-  const [showForm, setShowForm] = useState(false)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get(`${API.url}/tasks`);
-      setTasks(response.data)
-    }
-    fetchData()
-  },[])
+  const tasks = useTasks();
+  const [showForm, setShowForm] = useState(false);
 
   const addTask = () => {
-    setShowForm(true)
-  }
+    setShowForm(true);
+  };
 
   return (
     <Container>
@@ -108,12 +99,15 @@ function Home() {
             <TaskManager />
           </div>
         </OptionsContainer>
+        {showForm ? <TaskForm setShowForm={setShowForm} /> : ''}
         <TasksContainer>
-          {tasks
-            ? tasks.map((task) => {
+          {tasks ? (
+            tasks.map((task) => {
               return <Task key={task._id} task={task} showCheckbox={false} />;
             })
-            : <p>Loading...</p>}
+          ) : (
+            <p>Loading...</p>
+          )}
         </TasksContainer>
       </ContentContainer>
     </Container>
