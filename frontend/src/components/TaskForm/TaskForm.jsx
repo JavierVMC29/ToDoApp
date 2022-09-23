@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 
 import { FiPlus } from 'react-icons/fi';
@@ -11,6 +12,7 @@ import { addTask } from '../../utils/functions';
 
 // Components
 import Button from '../Button/Button';
+import LabelForm from '../LabelForm/LabelForm';
 
 const Background = styled.div`
   width: 100vw;
@@ -84,6 +86,7 @@ const Select = styled.select`
   border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: ${(props) => props.theme.borderRadius};
   margin-bottom: 30px;
+  min-width: 200px;
 `;
 
 const PlusIcon = styled(FiPlus)`
@@ -98,19 +101,34 @@ const Error = styled.p`
   margin: 0;
 `;
 
+const Option = styled.option`
+  background: ${(props) => props.color};
+  color: ${(props) => props.theme.colors.white};
+`;
+
 function TaskForm({ setShowForm }) {
-  const labels = useLabels();
+  const [showLabelForm, setShowLabelForm] = useState(false);
+
+  const addLabel = () => {
+    setShowLabelForm(true);
+  };
+
+  const labels = useLabels(showLabelForm);
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm();
-  const onSubmit = (data) => addTask(data);
+  const onSubmit = (data) => {
+    addTask(data);
+    closeForm();
+  };
 
   const closeForm = () => setShowForm(false);
 
   return (
     <Background>
+      {showLabelForm ? <LabelForm setShowForm={setShowLabelForm} /> : ''}
       <Container>
         <Title>New Task</Title>
         <Form onSubmit={handleSubmit(onSubmit)}>
@@ -144,15 +162,26 @@ function TaskForm({ setShowForm }) {
             <div>
               <Label>Label</Label>
               <Error>{errors.label?.message}</Error>
-              <Select {...register('label', { required: 'Label is required' })}>
+              <Select
+                {...register('label', { required: 'Label is required' })}
+                defaultValue=""
+              >
+                <option value=""></option>
                 {labels
                   ? labels.map((label) => (
-                      <option value={label._id} key={label._id}>
+                      <Option
+                        value={label._id}
+                        key={label._id}
+                        color={label.color}
+                      >
                         {label.name}
-                      </option>
+                      </Option>
                     ))
                   : ''}
               </Select>
+              <Button onClick={addLabel}>
+                <PlusIcon />
+              </Button>
             </div>
           </Row>
           <Label>Details</Label>

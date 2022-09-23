@@ -13,6 +13,7 @@ const Container = styled.nav`
   position: sticky;
   top: 0;
   background: ${(props) => props.theme.colors.primary};
+  z-index: 999;
 `;
 
 const Tabs = styled.ul`

@@ -8,7 +8,7 @@ import API from '../enviroment';
  * Return the user's labels
  * @returns Labels created by the user
  */
-function useLabels() {
+function useLabels(update) {
   const [labels, setLabels] = useState();
   useEffect(() => {
     const fetchData = async () => {
@@ -16,7 +16,7 @@ function useLabels() {
       setLabels(response.data);
     };
     fetchData();
-  }, []);
+  }, [update]);
   return labels;
 }
 

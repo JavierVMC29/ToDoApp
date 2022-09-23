@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import Button from '../Button/Button';
 
 const CheckIcon = styled(FiCheck)`
-  color: ${(props) => props.white ? props.theme.colors.white : props.theme.colors.text};
+  color: ${(props) =>
+    props.white ? props.theme.colors.white : props.theme.colors.text};
   font-weight: 500;
   font-size: 1rem;
   margin-right: 5px;
@@ -15,7 +16,8 @@ const TrashIcon = styled(FiTrash)`
   font-weight: 500;
   font-size: 1rem;
   margin-right: 5px;
-  color: ${(props) => props.white ? props.theme.colors.white : props.theme.colors.text};
+  color: ${(props) =>
+    props.white ? props.theme.colors.white : props.theme.colors.text};
 `;
 
 class TaskManager extends React.Component {
@@ -28,24 +30,27 @@ class TaskManager extends React.Component {
 
   changeToDefaultMode = () => {
     this.setState({ mode: 'default' });
+    this.props.showCheckbox(false);
   };
 
   changeToMarkMode = () => {
     this.setState({ mode: 'mark' });
+    this.props.showCheckbox(true);
   };
 
   changeToDeleteMode = () => {
     this.setState({ mode: 'delete' });
+    this.props.showCheckbox(true);
   };
 
-  render(){
+  render() {
     const { mode } = this.state;
 
     if (mode === 'mark') {
       return (
         <>
           <Button green fontWhite>
-            <CheckIcon white/>
+            <CheckIcon white="true" />
             Mark tasks
           </Button>
           <Button onClick={this.changeToDefaultMode} transparent>
@@ -59,7 +64,7 @@ class TaskManager extends React.Component {
       return (
         <>
           <Button red fontWhite>
-            <CheckIcon white/>
+            <CheckIcon white="true" />
             Delete tasks
           </Button>
           <Button onClick={this.changeToDefaultMode} transparent>

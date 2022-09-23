@@ -77,8 +77,10 @@ const TasksContainer = styled.section`
  * @returns JSX.Element
  */
 function Home() {
-  const tasks = useTasks();
   const [showForm, setShowForm] = useState(false);
+  const [showCheckbox, setShowCheckbox] = useState(false);
+
+  const tasks = useTasks(showForm);
 
   const addTask = () => {
     setShowForm(true);
@@ -96,14 +98,16 @@ function Home() {
             </Button>
           </div>
           <div>
-            <TaskManager />
+            <TaskManager showCheckbox={setShowCheckbox} />
           </div>
         </OptionsContainer>
         {showForm ? <TaskForm setShowForm={setShowForm} /> : ''}
         <TasksContainer>
           {tasks ? (
             tasks.map((task) => {
-              return <Task key={task._id} task={task} showCheckbox={false} />;
+              return (
+                <Task key={task._id} task={task} showCheckbox={showCheckbox} />
+              );
             })
           ) : (
             <p>Loading...</p>
